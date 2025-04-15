@@ -10,13 +10,15 @@ export default function StarRating({
   size = 48,
   className="",
   message = [],
-  defaultRating = 0
+  defaultRating = 0,
+  onSetRating,
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
 
   function handleRating(rating) {
     setRating(rating);
+    onSetRating(rating)
   }
 
   const textStyle = {
