@@ -54,11 +54,12 @@ const average = (arr) =>
 const KEY = "e9bb5f5c";
 
 export default function App() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("inception");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState("tt1375666");
   const tempQuery = "interstellar";
 
   // useEffect(() =>{
@@ -82,12 +83,14 @@ export default function App() {
           `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
         );
 
-        if (!res.ok) throw new Error("Something went wrong with fetching movies");
+        if (!res.ok)
+          throw new Error("Something went wrong with fetching movies");
 
         const data = await res.json();
         if (data.Response === "False") throw new Error("Movie not found");
 
         setMovies(data.Search);
+        console.log(data.Search);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -96,7 +99,7 @@ export default function App() {
     }
     fetchMovies();
 
-    if (query.length > 3) {
+    if (query.length < 3) {
       setMovies([]);
       setError("");
       return;
@@ -120,8 +123,14 @@ export default function App() {
         </Box>
 
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedSummaryList watched={watched} />
+          {selectedId ? (
+            <SelectedMovieDetails selectedId={selectedId} />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedSummaryList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
@@ -198,6 +207,10 @@ function MoviesList({ movies }) {
       ))}
     </ul>
   );
+}
+
+function SelectedMovieDetails({ selectedId }) {
+  return <div className="detail">{selectedId}</div>;
 }
 
 function Movie({ movie }) {
