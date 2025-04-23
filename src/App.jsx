@@ -54,34 +54,60 @@ const average = (arr) =>
 const KEY = "e9bb5f5c";
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [query, setQuery] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const tempQuery = "interstellar";
+
+  // useEffect(() =>{
+  //   console.log("App mounted");
+
+  // }, [])
+
+  // useEffect(() =>{
+  //   console.log("Before unmounting");
+
+  // })
+
+  // console.log("App rendered");
 
   useEffect(() => {
     async function fetchMovies() {
       try {
         setIsLoading(true);
+        setError("");
         const res = await fetch(
-          `https://www.omdbapi.com/?s=batman&apikey=${KEY}`
+          `https://www.omdbapi.com/?s=batman&apikey=${KEY}&s=${query}`
         );
-        if (!res.ok) throw new Error("Something went wrong with fetching data");
+
+        if (!res.ok) throw new Error("Something went wrong with fetching movies");
+
         const data = await res.json();
-        setIsLoading(false);
+        if (data.Response === "False") throw new Error("Movie not found");
+
         setMovies(data.Search);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchMovies();
-  }, []);
+
+    if (query.length > 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+  }, [query]);
 
   return (
     <>
       <NavBar>
         <Logo />
-        <NavbarInput />
+        <NavbarInput query={query} setQuery={setQuery} />
         <NavbarMovieLength movies={movies} />
       </NavBar>
 
@@ -90,8 +116,8 @@ export default function App() {
           {/* {isLoading ? <Loader /> : <MoviesList movies={movies} />} */}
           {!isLoading && !error && <MoviesList movies={movies} />}
           {error && <ErrorMessage message={error} />}
-          {isLoading && !error && <Loader />}
-          </Box>
+          {isLoading && <Loader />}
+        </Box>
 
         <Box>
           <WatchedSummary watched={watched} />
@@ -102,7 +128,7 @@ export default function App() {
   );
 }
 
-function ErrorMessage({message}){
+function ErrorMessage({ message }) {
   return (
     <p className="error">
       <span>❌</span>
@@ -122,15 +148,13 @@ function NavBar({ children }) {
 function Logo() {
   return (
     <div className="logo">
-      <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
+      <span role="img">🎥</span>
+      <h1>Titan Movies</h1>
     </div>
   );
 }
 
-function NavbarInput() {
-  const [query, setQuery] = useState("");
-
+function NavbarInput({ query, setQuery }) {
   return (
     <input
       className="search"
