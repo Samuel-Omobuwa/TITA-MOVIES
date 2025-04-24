@@ -82,6 +82,11 @@ export default function App() {
     setSelectedId(null);
   }
 
+
+  function handleAddWatchedMovie(movie) {
+    setWatched((watched) => [...watched, movie]);
+  }
+
   useEffect(() => {
     async function fetchMovies() {
       try {
@@ -137,6 +142,7 @@ export default function App() {
             <SelectedMovieDetails
               selectedId={selectedId}
               onCloseMovie={handleCloseMovieDetails}
+              onAddWatched={handleAddWatchedMovie}
             />
           ) : (
             <>
@@ -222,9 +228,10 @@ function MoviesList({ movies, onSelectMovie }) {
   );
 }
 
-function SelectedMovieDetails({ selectedId, onCloseMovie }) {
+function SelectedMovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
   const [movieDetails, setMovieDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState('');
 
   const {
     Title: title,
@@ -239,7 +246,22 @@ function SelectedMovieDetails({ selectedId, onCloseMovie }) {
     Genre: genre,
   } = movieDetails;
 
-  console.log(title, year);
+  function handleAdd() {
+
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      runtime: Number(runtime.split(" ")[0]),
+      imdbRating: Number(imdbRating),
+      userRating: 0,
+    };
+
+
+    onAddWatched(newWatchedMovie)
+    onCloseMovie();
+  }
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -296,8 +318,11 @@ function SelectedMovieDetails({ selectedId, onCloseMovie }) {
 
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={24} />
+              <StarRating maxRating={10} size={24} onSetRating={setUserRating}/>
             </div>
+            <button className="btn-add" onClick={handleAdd}>
+              Add movie
+            </button>
             <p>
               <em>{plot}</em>
             </p>
@@ -383,8 +408,8 @@ function WatchedSummaryList({ watched }) {
     <ul className="list">
       {watched.map((movie) => (
         <li key={movie.imdbID}>
-          <img src={movie.Poster} alt={`${movie.Title} poster`} />
-          <h3>{movie.Title}</h3>
+          <img src={movie.poster} alt={`${movie.title} poster`} />
+          <h3>{movie.title}</h3>
           <div>
             <p>
               <span>⭐️</span>
