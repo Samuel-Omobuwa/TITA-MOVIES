@@ -307,6 +307,14 @@ function SelectedMovieDetails({
     fetchMovieDetails();
   }, [selectedId]);
 
+  useEffect(() => {
+    document.title = `Titan Movies | ${title || "Loading..."}`;
+
+    return () => {
+      document.title = "Titan Movies";
+    };
+  }, [title]);
+
   return (
     <div className="detail">
       {isLoading ? (
