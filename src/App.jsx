@@ -119,6 +119,7 @@ export default function App() {
         setIsLoading(false);
       }
     }
+    handleCloseMovieDetails()
     fetchMovies();
 
     return () => {
@@ -291,9 +292,9 @@ function SelectedMovieDetails({
 
   useEffect(() => {
     const callBack = (e) => {
-      if (e.code === "Escapt") {
+      if (e.code === "Escape") {
         onCloseMovie();
-        console.log("Closing movie details");
+       
       }
     };
 
@@ -329,7 +330,9 @@ function SelectedMovieDetails({
         }
         console.error(err);
       }
+      
     }
+   
     fetchMovieDetails();
   }, [selectedId]);
 
