@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import StarRating from "./StarRating";
+import React, { useEffect, useState } from "react";
+import StarRating from "./../StarRating";
+import Loader from "./Loader";
 
 
 const KEY = "e9bb5f5c";

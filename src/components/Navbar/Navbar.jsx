@@ -1,13 +1,11 @@
-import NavbarInput from "./NavbarInput";
-import Logo from "./Logo";
-import NavbarMovieLength from "./NavbarMovieLength";
+
+// import NavbarMovieLength from "./NavbarMovieLength";
 
 function NavBar({ children }) {
   return (
     <>
-      <Logo />
-      <NavbarInput />
-      <NavbarMovieLength />
+     
+      {/* <NavbarMovieLength /> */}
       <nav className="nav-bar">{children}</nav>
     </>
   );

@@ -1,4 +1,5 @@
-
+import React from "react";
+import Movie from "./Movie";
 
 function MoviesList({ movies, onSelectMovie }) {
     return (

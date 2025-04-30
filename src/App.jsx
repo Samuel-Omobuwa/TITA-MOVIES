@@ -1,10 +1,18 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import StarRating from "./StarRating";
-import ErrorMessage from "./ErrorMessage";
-import NavBar from "./NavBar";
-import NavbarInput from "./Navbar/NavbarInput";
+import React, { useState, useEffect } from "react";
+import ErrorMessage from "./components/ErrorMessage";
+import Box from "./components/Box";
+import Main from "./components/Main";
+import NavBar from "./components/Navbar/Navbar";
+import Logo from "./components/Navbar/Logo";
+import NavbarMovieLength from "./components/Navbar/NavbarMovieLength";
+import MoviesList from "./components/MoviesList";
+import SelectedMovieDetails from "./components/SelectedMovieDetails";
+import WatchedSummary from "./components/WatchedSummary";
+import WatchedMoviesList from "./components/WatchedMoviesList";
+import "./App.css";
+import NavbarInput from "./components/Navbar/NavbarInput";
 import Loader from "./components/Loader";
+
 
 // const tempMovieData = [
 //   {
@@ -52,8 +60,6 @@ import Loader from "./components/Loader";
 //     userRating: 9,
 //   },
 // ];
-
-
 
 const KEY = "e9bb5f5c";
 
@@ -138,8 +144,11 @@ export default function App() {
 
   return (
     <>
-      <NavBar />     
-      
+      <NavBar>
+        <Logo />
+        <NavbarInput query={query} setQuery={setQuery} />
+        <NavbarMovieLength movies={movies} />
+      </NavBar>
 
       <Main>
         <Box>
@@ -174,27 +183,6 @@ export default function App() {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // function WatchedList() {
 
 //   const [isOpen2, setIsOpen2] = useState(true);
@@ -217,9 +205,3 @@ export default function App() {
 //     </div>
 //   );
 // }
-
-
-
-
-
-

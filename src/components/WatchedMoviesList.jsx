@@ -1,3 +1,6 @@
+import React from "react";
+import WatchedMovie from "./WatchedMovie";
+
 
 function WatchedMoviesList({ watched, onDeleteWatched }) {
     return (
