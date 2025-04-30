@@ -138,11 +138,8 @@ export default function App() {
 
   return (
     <>
-      <NavBar>
-        <Logo />
-        <NavbarInput query={query} setQuery={setQuery} />
-        <NavbarMovieLength movies={movies} />
-      </NavBar>
+      <NavBar />     
+      
 
       <Main>
         <Box>
