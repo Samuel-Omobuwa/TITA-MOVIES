@@ -1,21 +1,15 @@
 import { useEffect, useRef } from "react";
+import { useKey } from "../hooks/useKey";
 
 function NavbarInput({ query, setQuery }) {
   const inputEl = useRef(null);
 
-  useEffect(function () {
-    function callback(e) {
+  useKey('Enter', function(){
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setQuery("");
+  })
 
-      if(document.activeElement === inputEl.current) return;
-      if (e.code === "Enter") {
-        inputEl.current.focus();
-        setQuery("");
-      }
-    }
-
-    document.addEventListener("Keydown", callback);
-    return () => document.addEventListener("keydown", callback);
-  }, [setQuery]);
   return (
     <input
       className="search"
